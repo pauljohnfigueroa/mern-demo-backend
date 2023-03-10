@@ -6,11 +6,14 @@ const app = express()
 
 const PORT = process.env.PORT || 4000
 
+// Routers
+const userRouter = require('./routes/user')
+
 // Middleware
 app.use(express.json())
 
-// Routers
-
+// Routes
+app.use('/api/user', userRouter)
 
 // Database Connection
 // process is global variable available in node
