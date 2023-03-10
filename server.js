@@ -1,16 +1,21 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 const app = express()
 
 const PORT = process.env.PORT || 4000
+const corsOptions = require('./config/corsOptions')
 
 // Routers
 const userRouter = require('./routes/user')
 
 // Middleware
 app.use(express.json())
+// Cross Origin Resource Sharing
+// you must have a whitelist of allowed domains, see config/corsOptions
+app.use(cors(corsOptions))
 
 // Routes
 app.use('/api/user', userRouter)
