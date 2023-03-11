@@ -26,6 +26,7 @@ const userSchema = new Schema({
     }
 }, { timestamps: true })
 
+// register a user
 userSchema.statics.register = async function (email, name, password, phone, roles) {
 
     // check if fields are all filled
@@ -52,7 +53,29 @@ userSchema.statics.register = async function (email, name, password, phone, role
     const hash = await bcrypt.hash(password, salt)
 
     // save the user
-    const user = await this.create({ email, name, password, phone, roles })
+    const user = await this.create({ email, name, password: hash, phone, roles })
+    return user
+}
+
+// login a user
+userSchema.statics.login = async function (email, password) {
+    // validations
+    if (!email || !password) {
+        throw Error("All fields are required.")
+    }
+
+    // check if email exists
+    const user = await this.findOne({ email })
+    if (!user) {
+        throw Error('Email is incorrect.')
+    }
+
+    // compare password and hash
+    const match = await bcrypt.compare(password, user.password)
+    if (!match) {
+        throw Error('Password is incorrect.')
+    }
+
     return user
 }
 
