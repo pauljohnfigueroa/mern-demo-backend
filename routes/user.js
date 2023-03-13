@@ -13,12 +13,14 @@ const {
 
 
 // authentication routes
+
 router.post('/login', loginUser)
 
 // Protect Routes
 const requireAuth = require('../middleware/requireAuth')
 router.use(requireAuth)
 
+// Protected Routes
 router.post('/register', registerUser)
 router.get('/', getUsers)
 router.get('/:id', getUser)
