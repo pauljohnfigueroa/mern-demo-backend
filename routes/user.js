@@ -6,23 +6,21 @@ const {
     registerUser,
     loginUser,
     getUsers,
-    createUser,
     getUser,
     deleteUser,
     updateUser
 } = require('../controllers/userController')
 
 
-// routes
-router.post('/register', registerUser)
+// authentication routes
 router.post('/login', loginUser)
 
 // Protect Routes
 const requireAuth = require('../middleware/requireAuth')
 router.use(requireAuth)
 
+router.post('/register', registerUser)
 router.get('/', getUsers)
-router.post('/', createUser)
 router.get('/:id', getUser)
 router.delete('/:id', deleteUser)
 router.patch('/:id', updateUser)
