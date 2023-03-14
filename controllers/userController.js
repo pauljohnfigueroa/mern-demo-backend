@@ -62,11 +62,24 @@ const deleteUser = async (req, res) => {
     }
 
     res.status(200).json(user)
-    //res.status(200).json({ message: "deleteUser Route." })
 }
 
 const updateUser = async (req, res) => {
-    res.status(200).json({ message: "updateUser Route." })
+    const { id } = req.params
+    // check if _id is valid
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: "No such ID." })
+    }
+
+    const user = await User.findOneAndUpdate({ _id: id }, {
+        ...req.body
+    })
+
+    if (!user) {
+        return res.status(400).json({ error: 'User does not exist.' })
+    }
+
+    res.status(200).json(user)
 }
 
 
